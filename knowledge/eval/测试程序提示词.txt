@@ -1,0 +1,30 @@
+请帮我生成一个基于 ragas 框架的 RAG 评估程序。
+
+【核心约束】
+1. 严禁修改项目中原有的任何业务代码、检索链路及生成流程。
+2. 评估程序须独立可运行，通过导入或调用方式接入现有流程，不得侵入式改写。
+3. 所有 LLM 与 Embedding 必须使用项目已封装的工具函数，不得自行初始化 OpenAI 等客户端。
+
+【评估指标】
+采用 Ragas 标准 RAG Triad 指标集，至少包含以下 6 项：
+1. Faithfulness（忠实度）：答案中的声明是否被检索上下文支持，得分 0-1，越高幻觉越少。
+2. Answer Relevancy（答案相关性）：答案是否直接回应用户问题，得分 0-1，越高越切题。
+3. Context Precision（上下文精度）：检索块中相关内容是否排在前面，反映信噪比。
+4. Context Recall（上下文召回率）：参考答案中的知识点是否被检索上下文覆盖。
+5. Answer Correctness（答案正确性）：最终答案与 ground_truth 在事实与语义上的一致性（0-1）。。
+
+【数据读取与列映射】
+1. 从 "C:\Users\19394\Downloads\qa.csv" 读取 question 与 ground_truth。
+2. 评估样本须构造为 Ragas 所需的标准字段：
+   - user_input ← question
+   - response ← 流程输出的最终答案
+   - retrieved_contexts ← 从流程 state 的 rerank_result 中获取
+   - reference ← ground_truth
+3. 若字段名与 Ragas 默认不一致，通过 evaluate() 的 column_map 显式映射，禁止隐式猜测。
+
+【工具使用】
+评估中使用的llm和embedding，可以使用项目的工具函数
+
+【注意事项】
+1 要求有详细的注解 每个函数有函数说明 核心的步骤函数要以 step_1 xxx  step_2 xxx 等
+2 限制：不要修改原有的代码
